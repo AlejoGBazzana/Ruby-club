@@ -1,0 +1,34 @@
+<h1>Actividades</h1>
+
+<p><%= link_to "Nueva actividad", new_admin_actividad_path %></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Fecha</th>
+      <th>Horario</th>
+      <th>Cupo</th>
+      <th>Deporte</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @actividades.each do |actividad| %>
+      <tr>
+        <td><%= actividad.nombre %></td>
+        <td><%= actividad.fecha %></td>
+        <td><%= actividad.horario.strftime("%H:%M") %></td>
+        <td><%= actividad.cupo %></td>
+        <td><%= actividad.deporte.nombre %></td>
+        <td>
+          <%= link_to "Ver", admin_actividad_path(actividad) %>
+          <%= link_to "Editar", edit_admin_actividad_path(actividad) %>
+          <%= link_to "Eliminar", admin_actividad_path(actividad), data: { turbo_method: :delete, turbo_confirm: "¿Eliminar esta actividad?" } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p><%= link_to "Volver al área administrativa", admin_root_path %></p>

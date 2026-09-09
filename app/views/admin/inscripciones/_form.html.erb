@@ -1,0 +1,25 @@
+<%= form_with model: [:admin, inscripcion] do |form| %>
+  <%= render "admin/shared/form_errors", resource: inscripcion %>
+
+  <p>
+    <%= form.label :deportista_id, "Deportista" %>
+    <%= form.collection_select :deportista_id, @deportistas, :id, :nombre_completo, { prompt: "Seleccione un deportista" } %>
+  </p>
+
+  <p>
+    <%= form.label :actividad_id, "Actividad" %>
+    <%= form.select :actividad_id, @actividades.map { |actividad| ["#{actividad.nombre} - #{actividad.deporte.nombre}", actividad.id] }, { prompt: "Seleccione una actividad" } %>
+  </p>
+
+  <p>
+    <%= form.label :fecha_inscripcion, "Fecha de inscripción" %>
+    <%= form.date_field :fecha_inscripcion %>
+  </p>
+
+  <p>
+    <%= form.label :estado %>
+    <%= form.select :estado, Inscripcion::ESTADOS.map { |estado| [estado.capitalize, estado] }, { prompt: "Seleccione un estado" } %>
+  </p>
+
+  <p><%= form.submit %></p>
+<% end %>

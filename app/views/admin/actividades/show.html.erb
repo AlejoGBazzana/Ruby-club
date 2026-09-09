@@ -1,0 +1,17 @@
+<h1>Actividad</h1>
+
+<dl>
+  <dt>Nombre</dt>
+  <dd><%= @actividad.nombre %></dd>
+  <dt>Fecha</dt>
+  <dd><%= @actividad.fecha %></dd>
+  <dt>Horario</dt>
+  <dd><%= @actividad.horario.strftime("%H:%M") %></dd>
+  <dt>Cupo</dt>
+  <dd><%= @actividad.cupo %></dd>
+  <dt>Deporte</dt>
+  <dd><%= @actividad.deporte.nombre %></dd>
+</dl>
+
+<p><%= link_to "Editar", edit_admin_actividad_path(@actividad) %></p>
+<p><%= link_to "Volver a actividades", admin_actividades_path %></p>

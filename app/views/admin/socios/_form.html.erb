@@ -1,0 +1,25 @@
+<%= form_with model: [:admin, socio] do |form| %>
+  <%= render "admin/shared/form_errors", resource: socio %>
+
+  <p>
+    <%= form.label :nombre %>
+    <%= form.text_field :nombre %>
+  </p>
+
+  <p>
+    <%= form.label :apellido %>
+    <%= form.text_field :apellido %>
+  </p>
+
+  <p>
+    <%= form.label :email %>
+    <%= form.email_field :email %>
+  </p>
+
+  <p>
+    <%= form.label :fecha_inscripcion, "Fecha de inscripción" %>
+    <%= form.date_field :fecha_inscripcion %>
+  </p>
+
+  <p><%= form.submit %></p>
+<% end %>

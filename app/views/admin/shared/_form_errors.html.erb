@@ -1,0 +1,10 @@
+<% if resource.errors.any? %>
+  <section>
+    <h2>Hay errores que impiden guardar el registro:</h2>
+    <ul>
+      <% resource.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </section>
+<% end %>

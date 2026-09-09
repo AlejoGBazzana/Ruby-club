@@ -1,0 +1,10 @@
+<%= form_with model: [:admin, deporte] do |form| %>
+  <%= render "admin/shared/form_errors", resource: deporte %>
+
+  <p>
+    <%= form.label :nombre %>
+    <%= form.text_field :nombre %>
+  </p>
+
+  <p><%= form.submit %></p>
+<% end %>

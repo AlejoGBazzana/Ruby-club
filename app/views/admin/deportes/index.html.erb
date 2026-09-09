@@ -1,0 +1,26 @@
+<h1>Deportes</h1>
+
+<p><%= link_to "Nuevo deporte", new_admin_deporte_path %></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @deportes.each do |deporte| %>
+      <tr>
+        <td><%= deporte.nombre %></td>
+        <td>
+          <%= link_to "Ver", admin_deporte_path(deporte) %>
+          <%= link_to "Editar", edit_admin_deporte_path(deporte) %>
+          <%= link_to "Eliminar", admin_deporte_path(deporte), data: { turbo_method: :delete, turbo_confirm: "¿Eliminar este deporte?" } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p><%= link_to "Volver al área administrativa", admin_root_path %></p>

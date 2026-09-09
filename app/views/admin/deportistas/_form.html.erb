@@ -1,0 +1,15 @@
+<%= form_with model: [:admin, deportista] do |form| %>
+  <%= render "admin/shared/form_errors", resource: deportista %>
+
+  <p>
+    <%= form.label :socio_id, "Socio" %>
+    <%= form.collection_select :socio_id, @socios, :id, :nombre_completo, { prompt: "Seleccione un socio" } %>
+  </p>
+
+  <p>
+    <%= form.label :edad %>
+    <%= form.number_field :edad, min: 0 %>
+  </p>
+
+  <p><%= form.submit %></p>
+<% end %>

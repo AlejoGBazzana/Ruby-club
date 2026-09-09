@@ -1,0 +1,30 @@
+<h1>Socios</h1>
+
+<p><%= link_to "Nuevo socio", new_admin_socio_path %></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Email</th>
+      <th>Fecha de inscripción</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @socios.each do |socio| %>
+      <tr>
+        <td><%= socio.nombre_completo %></td>
+        <td><%= socio.email %></td>
+        <td><%= socio.fecha_inscripcion %></td>
+        <td>
+          <%= link_to "Ver", admin_socio_path(socio) %>
+          <%= link_to "Editar", edit_admin_socio_path(socio) %>
+          <%= link_to "Eliminar", admin_socio_path(socio), data: { turbo_method: :delete, turbo_confirm: "¿Eliminar este socio?" } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p><%= link_to "Volver al área administrativa", admin_root_path %></p>

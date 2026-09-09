@@ -1,0 +1,32 @@
+<h1>Inscripciones</h1>
+
+<p><%= link_to "Nueva inscripción", new_admin_inscripcion_path %></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Deportista</th>
+      <th>Actividad</th>
+      <th>Fecha de inscripción</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @inscripciones.each do |inscripcion| %>
+      <tr>
+        <td><%= inscripcion.deportista.nombre_completo %></td>
+        <td><%= inscripcion.actividad.nombre %></td>
+        <td><%= inscripcion.fecha_inscripcion %></td>
+        <td><%= inscripcion.estado %></td>
+        <td>
+          <%= link_to "Ver", admin_inscripcion_path(inscripcion) %>
+          <%= link_to "Editar", edit_admin_inscripcion_path(inscripcion) %>
+          <%= link_to "Eliminar", admin_inscripcion_path(inscripcion), data: { turbo_method: :delete, turbo_confirm: "¿Eliminar esta inscripción?" } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p><%= link_to "Volver al área administrativa", admin_root_path %></p>

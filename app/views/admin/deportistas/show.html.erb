@@ -1,0 +1,13 @@
+<h1>Deportista</h1>
+
+<dl>
+  <dt>Socio</dt>
+  <dd><%= @deportista.nombre_completo %></dd>
+  <dt>Edad</dt>
+  <dd><%= @deportista.edad %></dd>
+  <dt>Deportes</dt>
+  <dd><%= @deportista.deportes.map(&:nombre).join(", ").presence || "Sin deportes asignados" %></dd>
+</dl>
+
+<p><%= link_to "Editar", edit_admin_deportista_path(@deportista) %></p>
+<p><%= link_to "Volver a deportistas", admin_deportistas_path %></p>

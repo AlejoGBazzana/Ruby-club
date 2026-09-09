@@ -1,0 +1,15 @@
+<h1>Socio</h1>
+
+<dl>
+  <dt>Nombre</dt>
+  <dd><%= @socio.nombre %></dd>
+  <dt>Apellido</dt>
+  <dd><%= @socio.apellido %></dd>
+  <dt>Email</dt>
+  <dd><%= @socio.email %></dd>
+  <dt>Fecha de inscripción</dt>
+  <dd><%= @socio.fecha_inscripcion %></dd>
+</dl>
+
+<p><%= link_to "Editar", edit_admin_socio_path(@socio) %></p>
+<p><%= link_to "Volver a socios", admin_socios_path %></p>

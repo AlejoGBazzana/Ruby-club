@@ -1,0 +1,30 @@
+<%= form_with model: [:admin, actividad] do |form| %>
+  <%= render "admin/shared/form_errors", resource: actividad %>
+
+  <p>
+    <%= form.label :nombre %>
+    <%= form.text_field :nombre %>
+  </p>
+
+  <p>
+    <%= form.label :fecha %>
+    <%= form.date_field :fecha %>
+  </p>
+
+  <p>
+    <%= form.label :horario %>
+    <%= form.time_field :horario %>
+  </p>
+
+  <p>
+    <%= form.label :cupo %>
+    <%= form.number_field :cupo, min: 1 %>
+  </p>
+
+  <p>
+    <%= form.label :deporte_id, "Deporte" %>
+    <%= form.collection_select :deporte_id, @deportes, :id, :nombre, { prompt: "Seleccione un deporte" } %>
+  </p>
+
+  <p><%= form.submit %></p>
+<% end %>

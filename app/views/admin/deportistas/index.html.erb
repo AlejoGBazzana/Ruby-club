@@ -1,0 +1,30 @@
+<h1>Deportistas</h1>
+
+<p><%= link_to "Nuevo deportista", new_admin_deportista_path %></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Socio</th>
+      <th>Edad</th>
+      <th>Deportes</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @deportistas.each do |deportista| %>
+      <tr>
+        <td><%= deportista.nombre_completo %></td>
+        <td><%= deportista.edad %></td>
+        <td><%= deportista.deportes.map(&:nombre).join(", ") %></td>
+        <td>
+          <%= link_to "Ver", admin_deportista_path(deportista) %>
+          <%= link_to "Editar", edit_admin_deportista_path(deportista) %>
+          <%= link_to "Eliminar", admin_deportista_path(deportista), data: { turbo_method: :delete, turbo_confirm: "¿Eliminar este deportista?" } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p><%= link_to "Volver al área administrativa", admin_root_path %></p>

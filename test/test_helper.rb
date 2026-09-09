@@ -13,7 +13,12 @@ module ActiveSupport
       ActiveRecord::Base.connection.execute("DELETE FROM deportes_deportistas") rescue nil
       Deportista.delete_all
       Deporte.delete_all
+      User.delete_all rescue nil
       Socio.delete_all
     end
   end
+end
+
+class ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
 end

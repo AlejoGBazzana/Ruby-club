@@ -1,5 +1,6 @@
 class Socio < ApplicationRecord
   has_one :deportista, dependent: :restrict_with_error
+  has_one :user, dependent: :nullify
 
   before_validation :establecer_fecha_inscripcion, on: :create
 

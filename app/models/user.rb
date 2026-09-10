@@ -1,3 +1,6 @@
+require "digest"
+require "securerandom"
+
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -18,5 +21,25 @@ class User < ApplicationRecord
 
   def can_access_admin?
     administrative?
+  end
+
+  def generate_api_token!
+    token = SecureRandom.urlsafe_base64(48)
+    update!(api_token_digest: self.class.digest_api_token(token))
+    token
+  end
+
+  def invalidate_api_token!
+    update!(api_token_digest: nil)
+  end
+
+  def self.authenticate_api_token(token)
+    return if token.blank?
+
+    find_by(api_token_digest: digest_api_token(token))
+  end
+
+  def self.digest_api_token(token)
+    Digest::SHA256.hexdigest(token)
   end
 end

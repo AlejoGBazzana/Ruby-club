@@ -1,6 +1,7 @@
 require "test_helper"
 
 class InscripcionTest < ActiveSupport::TestCase
+  include ActionMailer::TestHelper
   def setup
     @socio1 = Socio.create!(nombre: "Juan", apellido: "Perez", email: "juan.perez@club.com")
     @socio2 = Socio.create!(nombre: "Pedro", apellido: "Gomez", email: "pedro.gomez@club.com")
@@ -137,5 +138,28 @@ class InscripcionTest < ActiveSupport::TestCase
     assert_equal "cancelada", inscripcion.estado
     assert_not inscripcion.activa?
     assert inscripcion.cancelada?
+  end
+
+  test "envia una confirmacion solo al pasar de pendiente a confirmada" do
+    inscripcion = Inscripcion.create!(deportista: @deportista1, actividad: @actividad, estado: "pendiente")
+
+    assert_emails 1 do
+      inscripcion.confirmar!
+    end
+
+    correo = ActionMailer::Base.deliveries.last
+    assert_equal [@socio1.email], correo.to
+
+    ActionMailer::Base.deliveries.clear
+    assert_no_emails do
+      inscripcion.update!(fecha_inscripcion: Date.yesterday)
+    end
+  end
+
+  test "no envia correo para inscripciones pendientes ni canceladas" do
+    assert_no_emails do
+      inscripcion = Inscripcion.create!(deportista: @deportista1, actividad: @actividad, estado: "pendiente")
+      inscripcion.cancelar!
+    end
   end
 end

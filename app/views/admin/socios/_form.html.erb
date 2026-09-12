@@ -21,5 +21,11 @@
     <%= form.date_field :fecha_inscripcion %>
   </p>
 
+  <p>
+    <%= form.label :foto_perfil, "Foto de perfil" %>
+    <%= form.file_field :foto_perfil, accept: "image/jpeg,image/png,image/webp" %>
+    <small>Formatos permitidos: JPEG, PNG o WebP. Tamaño máximo: 5 MB.</small>
+  </p>
+
   <p><%= form.submit %></p>
 <% end %>

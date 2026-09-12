@@ -74,4 +74,27 @@ class SocioTest < ActiveSupport::TestCase
   test "nombre_completo devuelve nombre y apellido concatenados" do
     assert_equal "Carlos Tevez", @socio_valido.nombre_completo
   end
+
+  test "permite adjuntar una foto de perfil valida" do
+    @socio_valido.foto_perfil.attach(
+      io: StringIO.new("contenido de imagen"),
+      filename: "perfil.png",
+      content_type: "image/png"
+    )
+
+    assert @socio_valido.save
+    assert_predicate @socio_valido.foto_perfil, :attached?
+    assert_equal "image/png", @socio_valido.foto_perfil.blob.content_type
+  end
+
+  test "rechaza una foto de perfil con tipo no permitido" do
+    @socio_valido.foto_perfil.attach(
+      io: StringIO.new("contenido de documento"),
+      filename: "perfil.pdf",
+      content_type: "application/pdf"
+    )
+
+    assert_not @socio_valido.valid?
+    assert_includes @socio_valido.errors[:foto_perfil], "debe ser una imagen JPEG, PNG o WebP"
+  end
 end

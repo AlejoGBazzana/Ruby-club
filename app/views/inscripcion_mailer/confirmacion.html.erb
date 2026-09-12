@@ -1,0 +1,16 @@
+<h1>Inscripción confirmada</h1>
+
+<p>Hola <%= @socio.nombre_completo %>,</p>
+
+<p>Tu inscripción fue confirmada.</p>
+
+<ul>
+  <li><strong>Deportista:</strong> <%= @deportista.nombre_completo %></li>
+  <li><strong>Actividad:</strong> <%= @actividad.nombre %></li>
+  <li><strong>Deporte:</strong> <%= @actividad.deporte.nombre %></li>
+  <li><strong>Fecha:</strong> <%= @actividad.fecha.strftime("%d/%m/%Y") %></li>
+  <li><strong>Horario:</strong> <%= @actividad.horario.strftime("%H:%M") %></li>
+  <li><strong>Estado:</strong> <%= @inscripcion.estado.capitalize %></li>
+</ul>
+
+<p>Te esperamos en Ruby Club.</p>

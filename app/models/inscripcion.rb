@@ -6,6 +6,7 @@ class Inscripcion < ApplicationRecord
   belongs_to :actividad
 
   before_validation :establecer_fecha_inscripcion, on: :create
+  after_commit :enviar_correo_de_confirmacion, on: %i[create update], if: :notificar_confirmacion?
 
   validates :deportista, presence: true
   validates :actividad, presence: true
@@ -60,5 +61,13 @@ class Inscripcion < ApplicationRecord
     if activas_existentes.count >= actividad.cupo
       errors.add(:base, "La actividad ha alcanzado su cupo máximo")
     end
+  end
+
+  def notificar_confirmacion?
+    saved_change_to_estado? && estado == "confirmada"
+  end
+
+  def enviar_correo_de_confirmacion
+    InscripcionMailer.confirmacion(self).deliver_now
   end
 end

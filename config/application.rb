@@ -35,5 +35,8 @@ module RubyClub
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    config.action_mailer.default_options = {
+      from: ENV.fetch("MAILER_FROM", "notificaciones@rubyclub.test")
+    }
   end
 end

@@ -42,10 +42,13 @@ class Admin::InscripcionesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "update" do
-    patch admin_inscripcion_url(@inscripcion), params: { inscripcion: { estado: "confirmada" } }
+    assert_emails 1 do
+      patch admin_inscripcion_url(@inscripcion), params: { inscripcion: { estado: "confirmada" } }
+    end
 
     assert_redirected_to admin_inscripcion_url(@inscripcion)
     assert_equal "confirmada", @inscripcion.reload.estado
+    assert_equal [@socio.email], ActionMailer::Base.deliveries.last.to
   end
 
   test "destroy" do

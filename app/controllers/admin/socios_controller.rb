@@ -48,6 +48,6 @@ class Admin::SociosController < Admin::BaseController
   end
 
   def socio_params
-    params.require(:socio).permit(:nombre, :apellido, :email, :fecha_inscripcion)
+    params.require(:socio).permit(:nombre, :apellido, :email, :fecha_inscripcion, :foto_perfil)
   end
 end

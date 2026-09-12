@@ -14,6 +14,8 @@ module ActiveSupport
       Deportista.delete_all
       Deporte.delete_all
       User.delete_all rescue nil
+      ActiveStorage::Attachment.delete_all
+      ActiveStorage::Blob.delete_all
       Socio.delete_all
     end
   end

@@ -27,6 +27,24 @@ class Admin::SociosControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to admin_socio_url(Socio.last)
   end
 
+  test "create with a profile photo" do
+    foto = fixture_file_upload("foto_perfil.png", "image/png")
+
+    assert_difference("Socio.count") do
+      post admin_socios_url, params: {
+        socio: {
+          nombre: "Bruno",
+          apellido: "Díaz",
+          email: "bruno@example.com",
+          fecha_inscripcion: Date.current,
+          foto_perfil: foto
+        }
+      }
+    end
+
+    assert_predicate Socio.last.foto_perfil, :attached?
+  end
+
   test "create with invalid attributes" do
     assert_no_difference("Socio.count") do
       post admin_socios_url, params: { socio: { nombre: "", apellido: "Díaz", email: "bruno@example.com" } }

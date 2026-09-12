@@ -1,5 +1,14 @@
 <h1>Socio</h1>
 
+<% if @socio.foto_perfil.attached? %>
+  <p>
+    <%= image_tag @socio.foto_perfil,
+                  alt: "Foto de perfil de #{@socio.nombre_completo}",
+                  width: 200,
+                  height: 200 %>
+  </p>
+<% end %>
+
 <dl>
   <dt>Nombre</dt>
   <dd><%= @socio.nombre %></dd>

@@ -18,7 +18,9 @@
         <td><%= inscripcion.deportista.nombre_completo %></td>
         <td><%= inscripcion.actividad.nombre %></td>
         <td><%= inscripcion.fecha_inscripcion %></td>
-        <td><%= inscripcion.estado %></td>
+        <td>
+          <span class="badge badge-<%= inscripcion.estado %>"><%= inscripcion.estado.capitalize %></span>
+        </td>
         <td>
           <%= link_to "Ver", admin_inscripcion_path(inscripcion) %>
           <%= link_to "Editar", edit_admin_inscripcion_path(inscripcion) %>

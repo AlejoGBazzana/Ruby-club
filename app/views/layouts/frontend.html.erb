@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title><%= content_for(:title) || "Ruby Club — Portal de Socios" %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0c1017">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="frontend-body">
+    <div class="frontend-wrapper">
+      <!-- Barra de navegación del Club -->
+      <header class="club-navbar" data-controller="navbar">
+        <div class="navbar-inner">
+          <a href="/actividades" class="navbar-brand">
+            <span class="brand-icon">💎</span>
+            <span>RUBY CLUB</span>
+          </a>
+
+          <!-- Enlaces para usuarios autenticados -->
+          <ul class="navbar-nav" data-navbar-target="authLinks" style="display: none;">
+            <li>
+              <a href="/actividades" class="nav-link" data-navbar-target="navLink">
+                Actividades
+              </a>
+            </li>
+            <li>
+              <a href="/mis-inscripciones" class="nav-link" data-navbar-target="navLink">
+                Mis Inscripciones
+              </a>
+            </li>
+          </ul>
+
+          <!-- Acciones de usuario -->
+          <div class="navbar-actions">
+            <!-- Badge con nombre de usuario -->
+            <span class="user-badge" data-navbar-target="userBadge" style="display: none;">
+              <span>👤</span>
+              <strong data-navbar-target="userName">Socio</strong>
+            </span>
+
+            <!-- Botón Cerrar Sesión -->
+            <button type="button"
+                    class="btn btn-outline btn-sm"
+                    data-navbar-target="logoutBtn"
+                    data-action="click->navbar#logout"
+                    style="display: none;">
+              Cerrar sesión
+            </button>
+
+            <!-- Enlace para ingresar si no está autenticado -->
+            <div data-navbar-target="guestLinks" style="display: none;">
+              <a href="/login" class="btn btn-primary btn-sm">
+                Ingresar
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Contenido Principal -->
+      <main class="club-main">
+        <%= yield %>
+      </main>
+
+      <!-- Footer simple -->
+      <footer class="club-footer">
+        <p>Ruby Club — Aplicación de gestión deportiva para clubes de barrio · Programación IV</p>
+      </footer>
+    </div>
+  </body>
+</html>

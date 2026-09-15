@@ -8,7 +8,7 @@
   <dt>Fecha de inscripción</dt>
   <dd><%= @inscripcion.fecha_inscripcion %></dd>
   <dt>Estado</dt>
-  <dd><%= @inscripcion.estado %></dd>
+  <dd><span class="badge badge-<%= @inscripcion.estado %>"><%= @inscripcion.estado.capitalize %></span></dd>
 </dl>
 
 <p><%= link_to "Editar", edit_admin_inscripcion_path(@inscripcion) %></p>

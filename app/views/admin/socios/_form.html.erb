@@ -23,6 +23,11 @@
 
   <p>
     <%= form.label :foto_perfil, "Foto de perfil" %>
+    <% if socio.persisted? && socio.foto_perfil.attached? %>
+      <div style="margin-bottom: 0.75rem;">
+        <%= image_tag socio.foto_perfil, width: 80, height: 80, style: "width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-subtle); display: block;" %>
+      </div>
+    <% end %>
     <%= form.file_field :foto_perfil, accept: "image/jpeg,image/png,image/webp" %>
     <small>Formatos permitidos: JPEG, PNG o WebP. Tamaño máximo: 5 MB.</small>
   </p>

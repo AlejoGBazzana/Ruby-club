@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title><%= content_for(:title) || "Ruby Club — Back-office" %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0c1017">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="admin-body">
+    <div class="admin-wrapper">
+      <!-- Barra superior de navegación -->
+      <header class="admin-navbar">
+        <div class="admin-navbar-inner">
+          <div class="admin-brand-group">
+            <%= link_to admin_root_path, class: "admin-navbar-brand" do %>
+              <span class="admin-brand-icon">💎</span>
+              <span>RUBY CLUB</span>
+            <% end %>
+            <span class="admin-brand-tag">Back-office</span>
+          </div>
+
+          <nav>
+            <ul class="admin-nav-links">
+              <li>
+                <%= link_to "Dashboard", admin_root_path, class: "admin-nav-link #{'active' if controller_name == 'dashboard'}" %>
+              </li>
+              <li>
+                <%= link_to "Socios", admin_socios_path, class: "admin-nav-link #{'active' if controller_name == 'socios'}" %>
+              </li>
+              <li>
+                <%= link_to "Deportistas", admin_deportistas_path, class: "admin-nav-link #{'active' if controller_name == 'deportistas'}" %>
+              </li>
+              <li>
+                <%= link_to "Deportes", admin_deportes_path, class: "admin-nav-link #{'active' if controller_name == 'deportes'}" %>
+              </li>
+              <li>
+                <%= link_to "Actividades", admin_actividades_path, class: "admin-nav-link #{'active' if controller_name == 'actividades'}" %>
+              </li>
+              <li>
+                <%= link_to "Inscripciones", admin_inscripciones_path, class: "admin-nav-link #{'active' if controller_name == 'inscripciones'}" %>
+              </li>
+            </ul>
+          </nav>
+
+          <div class="admin-navbar-user">
+            <%= link_to "Portal Socios ↗", root_path, class: "admin-portal-link", target: "_blank", title: "Abrir portal de socios en nueva pestaña" %>
+
+            <% if current_user %>
+              <span class="admin-user-badge">
+                <span>👤</span>
+                <strong><%= current_user.email %></strong>
+                <span class="admin-role-pill"><%= current_user.role %></span>
+              </span>
+              <%= button_to "Cerrar sesión", destroy_user_session_path, method: :delete, class: "admin-btn-logout", data: { turbo: false } %>
+            <% end %>
+          </div>
+        </div>
+      </header>
+
+      <!-- Contenido principal del back-office -->
+      <main class="admin-main">
+        <div class="admin-container">
+          <% if notice.present? %>
+            <div class="admin-alert admin-alert-success">
+              <span>✓</span>
+              <span><%= notice %></span>
+            </div>
+          <% end %>
+
+          <% if alert.present? %>
+            <div class="admin-alert admin-alert-danger">
+              <span>⚠</span>
+              <span><%= alert %></span>
+            </div>
+          <% end %>
+
+          <%= yield %>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

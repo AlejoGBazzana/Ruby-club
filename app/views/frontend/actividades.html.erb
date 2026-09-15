@@ -1,0 +1,45 @@
+<% content_for :title, "Actividades Deportivas — Ruby Club" %>
+
+<div class="club-container"
+     data-controller="auth-guard actividades">
+
+  <div class="page-header">
+    <div style="display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+      <h1 class="page-title">Actividades Deportivas</h1>
+      <span class="text-muted" style="font-size: 0.9rem; color: var(--text-muted);" data-actividades-target="totalCount"></span>
+    </div>
+    <p class="page-subtitle">Explorá las actividades del club y reservá tu lugar en entrenamientos y torneos.</p>
+  </div>
+
+  <!-- Alerta de Error con botón de reintento -->
+  <div class="alert alert-danger"
+       data-actividades-target="error"
+       style="display: none; justify-content: space-between; align-items: center;">
+    <div>
+      <span>⚠️</span>
+      <span data-actividades-target="errorMessage"></span>
+    </div>
+    <button type="button" class="btn btn-outline btn-sm" data-action="click->actividades#retry">
+      Reintentar
+    </button>
+  </div>
+
+  <!-- Filtros por Deporte -->
+  <div class="filter-bar" data-actividades-target="filterContainer"></div>
+
+  <!-- Indicador de Carga -->
+  <div class="loading-state" data-actividades-target="loading">
+    <div class="spinner"></div>
+    <p>Cargando actividades disponibles...</p>
+  </div>
+
+  <!-- Grid de Tarjetas de Actividad -->
+  <div class="activities-grid" data-actividades-target="grid"></div>
+
+  <!-- Estado Vacío -->
+  <div class="empty-state" data-actividades-target="empty" style="display: none;">
+    <span class="empty-state-icon">⚽</span>
+    <h3 class="empty-state-title">No hay actividades disponibles</h3>
+    <p class="empty-state-text">No se encontraron actividades programadas para el deporte seleccionado.</p>
+  </div>
+</div>

@@ -52,7 +52,7 @@ class Admin::DeportistasController < Admin::BaseController
 
   def load_socios_disponibles
     @socios = Socio.left_outer_joins(:deportista)
-                   .where(deportistas: { id: [ nil, @deportista.id ] })
+                   .where(deportistas: { id: [ nil, @deportista&.id ] })
                    .order(:apellido, :nombre)
   end
 

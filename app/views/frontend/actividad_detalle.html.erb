@@ -1,0 +1,83 @@
+<% content_for :title, "Detalle de Actividad — Ruby Club" %>
+
+<div class="club-container"
+     data-controller="auth-guard actividad-detalle"
+     data-actividad-detalle-id-value="<%= @actividad_id %>">
+
+  <div>
+    <a href="/actividades" class="back-link">
+      <span>←</span> Volver a Actividades
+    </a>
+  </div>
+
+  <!-- Indicador de Carga -->
+  <div class="loading-state" data-actividad-detalle-target="loading">
+    <div class="spinner"></div>
+    <p>Cargando información de la actividad...</p>
+  </div>
+
+  <!-- Alerta de Error de carga -->
+  <div class="alert alert-danger"
+       data-actividad-detalle-target="error"
+       style="display: none; margin-top: 1.5rem;">
+    <span>⚠️</span>
+    <span data-actividad-detalle-target="errorMessage"></span>
+  </div>
+
+  <!-- Alerta de Feedback de Inscripción (éxito o error) -->
+  <div class="alert"
+       data-actividad-detalle-target="feedbackAlert"
+       style="display: none; margin-top: 1.5rem;">
+    <span>ℹ️</span>
+    <span data-actividad-detalle-target="feedbackAlertText"></span>
+  </div>
+
+  <!-- Tarjeta de Detalle -->
+  <div class="detail-card" data-actividad-detalle-target="content" style="display: none;">
+    <div class="detail-header">
+      <span class="sport-tag" data-actividad-detalle-target="sportTag">Deporte</span>
+      <h1 class="detail-title" data-actividad-detalle-target="title">Cargando...</h1>
+    </div>
+
+    <!-- Banner de Estado (Ya inscripto / Cupo completo) -->
+    <div class="alert"
+         data-actividad-detalle-target="statusBanner"
+         style="display: none;">
+      <span>ℹ️</span>
+      <span data-actividad-detalle-target="statusBannerText"></span>
+    </div>
+
+    <!-- Grilla de Estadísticas -->
+    <div class="detail-grid">
+      <div>
+        <div class="detail-stat-label">Fecha</div>
+        <div class="detail-stat-value" data-actividad-detalle-target="fecha">--/--/----</div>
+      </div>
+      <div>
+        <div class="detail-stat-label">Horario</div>
+        <div class="detail-stat-value" data-actividad-detalle-target="horario">--:-- hs</div>
+      </div>
+      <div>
+        <div class="detail-stat-label">Cupo Total</div>
+        <div class="detail-stat-value" data-actividad-detalle-target="cupoTotal">0</div>
+      </div>
+      <div>
+        <div class="detail-stat-label">Cupos Disponibles</div>
+        <div class="detail-stat-value" data-actividad-detalle-target="cupoDisponible">0</div>
+      </div>
+    </div>
+
+    <!-- Barra de progreso de cupos -->
+    <div class="quota-progress">
+      <div style="display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.4rem;">
+        <span>Ocupación de la actividad</span>
+      </div>
+      <div class="quota-bar-bg">
+        <div class="quota-fill" data-actividad-detalle-target="quotaBar" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <!-- Acciones -->
+    <div class="detail-actions" data-actividad-detalle-target="actionsContainer"></div>
+  </div>
+</div>

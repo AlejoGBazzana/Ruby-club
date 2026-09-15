@@ -1,11 +1,41 @@
-<h1>Área administrativa</h1>
+<div class="admin-dashboard-header">
+  <h1>Panel de Administración</h1>
+  <p class="admin-dashboard-subtitle">Gestión interna, control de padrón y actividades del club</p>
+</div>
 
-<nav>
-  <ul>
-    <li><%= link_to "Socios", admin_socios_path %></li>
-    <li><%= link_to "Deportistas", admin_deportistas_path %></li>
-    <li><%= link_to "Deportes", admin_deportes_path %></li>
-    <li><%= link_to "Actividades", admin_actividades_path %></li>
-    <li><%= link_to "Inscripciones", admin_inscripciones_path %></li>
-  </ul>
-</nav>
+<div class="admin-dashboard-grid">
+  <%= link_to admin_socios_path, class: "admin-dashboard-card" do %>
+    <div class="admin-card-icon">👥</div>
+    <h2 class="admin-card-title">Socios</h2>
+    <p class="admin-card-desc">Padrón oficial de socios, datos personales, fecha de inscripción y fotos de perfil.</p>
+    <span class="admin-card-link">Acceder a socios →</span>
+  <% end %>
+
+  <%= link_to admin_deportistas_path, class: "admin-dashboard-card" do %>
+    <div class="admin-card-icon">🏃</div>
+    <h2 class="admin-card-title">Deportistas</h2>
+    <p class="admin-card-desc">Gestión de deportistas federados, edades y asignación deportiva.</p>
+    <span class="admin-card-link">Acceder a deportistas →</span>
+  <% end %>
+
+  <%= link_to admin_deportes_path, class: "admin-dashboard-card" do %>
+    <div class="admin-card-icon">🏅</div>
+    <h2 class="admin-card-title">Deportes</h2>
+    <p class="admin-card-desc">Catálogo de disciplinas disponibles en la institución deportiva.</p>
+    <span class="admin-card-link">Acceder a deportes →</span>
+  <% end %>
+
+  <%= link_to admin_actividades_path, class: "admin-dashboard-card" do %>
+    <div class="admin-card-icon">📅</div>
+    <h2 class="admin-card-title">Actividades</h2>
+    <p class="admin-card-desc">Programación de clases, horarios y control de cupos por disciplina.</p>
+    <span class="admin-card-link">Acceder a actividades →</span>
+  <% end %>
+
+  <%= link_to admin_inscripciones_path, class: "admin-dashboard-card" do %>
+    <div class="admin-card-icon">📝</div>
+    <h2 class="admin-card-title">Inscripciones</h2>
+    <p class="admin-card-desc">Registro y seguimiento del estado de inscripciones a actividades.</p>
+    <span class="admin-card-link">Acceder a inscripciones →</span>
+  <% end %>
+</div>

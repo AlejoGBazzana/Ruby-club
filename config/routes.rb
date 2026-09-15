@@ -32,6 +32,10 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  # Frontend para usuario final
+  root "frontend#actividades"
+  get "login", to: "frontend#login", as: :login
+  get "actividades", to: "frontend#actividades", as: :actividades
+  get "actividades/:id", to: "frontend#actividad_detalle", as: :actividad_detalle
+  get "mis-inscripciones", to: "frontend#mis_inscripciones", as: :mis_inscripciones
 end

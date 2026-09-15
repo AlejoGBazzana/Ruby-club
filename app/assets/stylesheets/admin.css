@@ -1,0 +1,907 @@
+/* app/assets/stylesheets/admin.css
+ * Estilos centralizados en Modo Oscuro para el Back-Office y Login Administrativo de Ruby Club
+ */
+
+:root {
+  --bg-main: #0c1017;
+  --bg-surface: #151b26;
+  --bg-surface-elevated: #1c2433;
+  --bg-surface-hover: #232c3d;
+  --border-subtle: #252f40;
+  --border-focus: #e11d48;
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  --ruby-primary: #e11d48;
+  --ruby-primary-hover: #be123c;
+  --ruby-primary-subtle: rgba(225, 29, 72, 0.15);
+
+  --emerald: #10b981;
+  --emerald-subtle: rgba(16, 185, 129, 0.15);
+
+  --amber: #f59e0b;
+  --amber-subtle: rgba(245, 158, 11, 0.15);
+
+  --danger: #ef4444;
+  --danger-hover: #dc2626;
+  --danger-subtle: rgba(239, 68, 68, 0.15);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+/* Base común para todo lo que NO sea el frontend de socios */
+body:not(.frontend-body) {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* Reseteo universal de enlaces: elimina azul (:link) y violeta (:visited) por defecto del navegador */
+body:not(.frontend-body) a,
+body:not(.frontend-body) a:link,
+body:not(.frontend-body) a:visited {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+body:not(.frontend-body) a:hover {
+  color: var(--text-primary);
+}
+
+/* Contenedor de alertas flash de Devise en application layout */
+body:not(.frontend-body) > p {
+  max-width: 420px;
+  margin: 1rem auto;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Layout administrativo */
+.admin-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.admin-main {
+  flex: 1;
+  padding: 2rem 1.5rem;
+}
+
+.admin-container {
+  max-width: 1120px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Barra de navegación del Back-Office */
+.admin-navbar {
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-navbar-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+.admin-brand-group {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.admin-navbar-brand,
+.admin-navbar-brand:link,
+.admin-navbar-brand:visited {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+
+.admin-brand-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--ruby-primary), #9f1239);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 6px rgba(225, 29, 72, 0.4);
+}
+
+.admin-brand-tag {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background-color: var(--ruby-primary-subtle);
+  color: var(--ruby-primary);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+}
+
+.admin-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.admin-nav-link,
+.admin-nav-link:link,
+.admin-nav-link:visited {
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 0.45rem 0.8rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.admin-nav-link:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-surface-elevated);
+}
+
+.admin-nav-link.active,
+.admin-nav-link.active:link,
+.admin-nav-link.active:visited {
+  color: var(--ruby-primary);
+  background-color: var(--ruby-primary-subtle);
+  font-weight: 600;
+}
+
+.admin-navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.admin-user-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background-color: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  color: var(--text-primary);
+}
+
+.admin-role-pill {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background-color: rgba(255, 255, 255, 0.08);
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.admin-portal-link,
+.admin-portal-link:link,
+.admin-portal-link:visited {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.82rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--radius-sm);
+  transition: color 0.15s ease;
+}
+
+.admin-portal-link:hover {
+  color: var(--text-primary);
+}
+
+.admin-btn-logout {
+  background-color: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s ease;
+}
+
+.admin-btn-logout:hover {
+  border-color: var(--text-secondary);
+  color: var(--text-primary);
+  background-color: var(--bg-surface-elevated);
+}
+
+/* Mensajes de alerta y feedback */
+.admin-alert {
+  padding: 0.85rem 1.15rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.admin-alert-success {
+  background-color: var(--emerald-subtle);
+  color: #a7f3d0;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.admin-alert-danger {
+  background-color: var(--danger-subtle);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Tipografía de páginas del back-office */
+body.admin-body h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 1.25rem;
+  color: var(--text-primary);
+}
+
+body.admin-body h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 1rem;
+}
+
+/* Acciones principales (Nuevo ...) */
+body.admin-body p:has(> a[href$="/new"]) {
+  margin: 0 0 1.25rem;
+}
+
+body.admin-body a[href$="/new"],
+body.admin-body a[href$="/new"]:link,
+body.admin-body a[href$="/new"]:visited {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: var(--ruby-primary);
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 0.55rem 1.15rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+body.admin-body a[href$="/new"]:hover {
+  background-color: var(--ruby-primary-hover);
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.35);
+}
+
+/* Enlaces de retorno / Volver: blanco o gris claro, nunca azul/violeta */
+body.admin-body p > a,
+body.admin-body p > a:link,
+body.admin-body p > a:visited,
+body.admin-body a[href="/admin"],
+body.admin-body a[href="/admin"]:link,
+body.admin-body a[href="/admin"]:visited {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: color 0.15s ease;
+}
+
+body.admin-body p > a:hover,
+body.admin-body a[href="/admin"]:hover {
+  color: var(--text-primary);
+}
+
+/* Tablas del Back-Office */
+body.admin-body table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+body.admin-body thead {
+  background-color: var(--bg-surface-elevated);
+}
+
+body.admin-body th {
+  padding: 0.85rem 1rem;
+  text-align: left;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+body.admin-body td {
+  padding: 0.85rem 1rem;
+  font-size: 0.92rem;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: middle;
+}
+
+body.admin-body tbody tr:last-child td {
+  border-bottom: none;
+}
+
+body.admin-body tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+body.admin-body tbody tr:hover {
+  background-color: var(--bg-surface-hover);
+}
+
+/* Botones de acción dentro de las celdas de tabla: contraste nítido garantizado */
+body.admin-body td a,
+body.admin-body td a:link,
+body.admin-body td a:visited {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  margin-right: 0.35rem;
+  transition: all 0.15s ease;
+}
+
+/* Acción "Ver" y "Editar": texto blanco/gris claro siempre */
+body.admin-body td a[href]:not([data-turbo-method="delete"]),
+body.admin-body td a[href]:not([data-turbo-method="delete"]):link,
+body.admin-body td a[href]:not([data-turbo-method="delete"]):visited {
+  background-color: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary) !important;
+}
+
+body.admin-body td a[href]:not([data-turbo-method="delete"]):hover {
+  background-color: var(--bg-surface-hover);
+  color: #ffffff !important;
+  border-color: var(--text-muted);
+}
+
+/* Acción "Eliminar": rojo pastel claro con excelente contraste sobre fondo oscuro */
+body.admin-body td a[data-turbo-method="delete"],
+body.admin-body td a[data-turbo-method="delete"]:link,
+body.admin-body td a[data-turbo-method="delete"]:visited {
+  background-color: transparent;
+  border: 1px solid var(--danger-subtle);
+  color: #f87171 !important;
+}
+
+body.admin-body td a[data-turbo-method="delete"]:hover {
+  background-color: var(--danger-subtle);
+  border-color: var(--danger);
+  color: #ffffff !important;
+}
+
+/* Formularios del Back-Office */
+body.admin-body form {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  max-width: 600px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.5rem;
+  box-sizing: border-box;
+}
+
+body.admin-body form p {
+  margin: 0 0 1.25rem;
+}
+
+body.admin-body form label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+}
+
+body.admin-body form input[type="text"],
+body.admin-body form input[type="email"],
+body.admin-body form input[type="number"],
+body.admin-body form input[type="date"],
+body.admin-body form input[type="time"],
+body.admin-body form select {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.85rem;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.95rem;
+  color-scheme: dark;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+body.admin-body form select option {
+  background-color: var(--bg-surface-elevated);
+  color: var(--text-primary);
+}
+
+body.admin-body form input:focus,
+body.admin-body form select:focus {
+  outline: none;
+  border-color: var(--ruby-primary);
+  box-shadow: 0 0 0 3px var(--ruby-primary-subtle);
+}
+
+body.admin-body form input[type="file"] {
+  width: 100%;
+  box-sizing: border-box;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  padding: 0.4rem 0;
+}
+
+body.admin-body form input[type="file"]::file-selector-button {
+  background-color: var(--bg-surface-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.45rem 0.85rem;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 0.75rem;
+  transition: all 0.15s ease;
+}
+
+body.admin-body form input[type="file"]::file-selector-button:hover {
+  background-color: var(--bg-surface-hover);
+  border-color: var(--text-muted);
+}
+
+body.admin-body form small {
+  display: block;
+  margin-top: 0.4rem;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+body.admin-body form input[type="submit"],
+body.admin-body form button[type="submit"] {
+  background-color: var(--ruby-primary);
+  color: #ffffff;
+  border: none;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 0.65rem 1.5rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+body.admin-body form input[type="submit"]:hover,
+body.admin-body form button[type="submit"]:hover {
+  background-color: var(--ruby-primary-hover);
+  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.35);
+}
+
+/* Errores en formularios */
+body.admin-body form section {
+  background-color: var(--danger-subtle);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+  color: #fca5a5;
+}
+
+body.admin-body form section h2 {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #fca5a5;
+  margin: 0 0 0.5rem;
+}
+
+body.admin-body form section ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  font-size: 0.875rem;
+}
+
+body.admin-body form section li {
+  margin-bottom: 0.25rem;
+}
+
+/* Vistas de Detalle (Show con <dl>) */
+body.admin-body dl {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  max-width: 600px;
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 1rem 1.25rem;
+  margin: 0 0 1.5rem;
+  box-shadow: var(--shadow-sm);
+  box-sizing: border-box;
+}
+
+body.admin-body dt {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  align-self: center;
+}
+
+body.admin-body dd {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin: 0;
+  align-self: center;
+}
+
+body.admin-body img {
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border-subtle);
+  object-fit: cover;
+  box-shadow: var(--shadow-sm);
+  display: block;
+  margin-bottom: 1.25rem;
+}
+
+/* Enlace "Editar" en vistas de detalle: botón ruby con texto blanco */
+body.admin-body p:has(> a[href$="/edit"]) a,
+body.admin-body p:has(> a[href$="/edit"]) a:link,
+body.admin-body p:has(> a[href$="/edit"]) a:visited {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: var(--ruby-primary);
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 0.55rem 1.15rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+body.admin-body p:has(> a[href$="/edit"]) a:hover {
+  background-color: var(--ruby-primary-hover);
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.35);
+}
+
+/* Badges de estado */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+}
+
+.badge-confirmada,
+.badge-available,
+.badge-activa {
+  background-color: var(--emerald-subtle);
+  color: #34d399;
+}
+
+.badge-cancelada,
+.badge-canceled {
+  background-color: rgba(100, 116, 139, 0.2);
+  color: var(--text-secondary);
+}
+
+/* Dashboard del Back-Office */
+.admin-dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.admin-dashboard-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin: 0.25rem 0 0;
+}
+
+.admin-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.admin-dashboard-card,
+.admin-dashboard-card:link,
+.admin-dashboard-card:visited {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  text-decoration: none;
+  color: var(--text-primary) !important;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-dashboard-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--ruby-primary);
+  box-shadow: var(--shadow-md);
+  color: var(--text-primary) !important;
+}
+
+.admin-card-icon {
+  font-size: 1.75rem;
+  width: 44px;
+  height: 44px;
+  background-color: var(--bg-surface-elevated);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-primary) !important;
+}
+
+.admin-card-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary) !important;
+  margin: 0;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.admin-card-link,
+.admin-card-link:link,
+.admin-card-link:visited {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ruby-primary) !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+/* Pantalla de Login Devise Administrativo */
+.devise-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+.devise-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem;
+  box-shadow: var(--shadow-md);
+  box-sizing: border-box;
+}
+
+.devise-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.devise-header .brand-icon {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 1rem;
+  background: linear-gradient(135deg, var(--ruby-primary), #9f1239);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  box-shadow: 0 4px 16px rgba(225, 29, 72, 0.4);
+}
+
+.devise-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.devise-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.devise-card form {
+  border: none;
+  padding: 0;
+  background: transparent;
+  max-width: none;
+  box-shadow: none;
+  margin-bottom: 0;
+}
+
+.devise-card .form-group {
+  margin-bottom: 1.25rem;
+}
+
+.devise-card .form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+}
+
+.devise-card .form-input {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.85rem;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.95rem;
+  color-scheme: dark;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.devise-card .form-input:focus {
+  outline: none;
+  border-color: var(--ruby-primary);
+  box-shadow: 0 0 0 3px var(--ruby-primary-subtle);
+}
+
+.devise-card .form-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.devise-card .form-check-label {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.devise-card .form-checkbox {
+  accent-color: var(--ruby-primary);
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+}
+
+.devise-card .btn-primary {
+  width: 100%;
+  background-color: var(--ruby-primary);
+  color: #ffffff !important;
+  border: none;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
+}
+
+.devise-card .btn-primary:hover {
+  background-color: var(--ruby-primary-hover);
+  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.35);
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .admin-navbar-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-nav-links {
+    overflow-x: auto;
+    width: 100%;
+    padding-bottom: 0.25rem;
+  }
+
+  body.admin-body dl {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+
+  body.admin-body dt {
+    margin-top: 0.5rem;
+  }
+
+  body.admin-body dt:first-child {
+    margin-top: 0;
+  }
+
+  body.admin-body table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

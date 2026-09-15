@@ -1,0 +1,96 @@
+<% content_for :title, "Mis Inscripciones — Ruby Club" %>
+
+<div class="club-container"
+     data-controller="auth-guard mis-inscripciones">
+
+  <div class="page-header">
+    <h1 class="page-title">Mis Inscripciones</h1>
+    <p class="page-subtitle">Gestioná tus inscripciones a las actividades del club. Podés cancelar en caso de no poder asistir o volver a inscribirte.</p>
+  </div>
+
+  <!-- Alerta de Feedback (éxito de cancelación o reinscripción) -->
+  <div class="alert"
+       data-mis-inscripciones-target="feedbackAlert"
+       style="display: none;">
+    <span>ℹ️</span>
+    <span data-mis-inscripciones-target="feedbackAlertText"></span>
+  </div>
+
+  <!-- Alerta de Error de carga -->
+  <div class="alert alert-danger"
+       data-mis-inscripciones-target="error"
+       style="display: none;">
+    <span>⚠️</span>
+    <span data-mis-inscripciones-target="errorMessage"></span>
+  </div>
+
+  <!-- Indicador de Carga -->
+  <div class="loading-state" data-mis-inscripciones-target="loading">
+    <div class="spinner"></div>
+    <p>Cargando tus inscripciones...</p>
+  </div>
+
+  <!-- Contenido principal -->
+  <div data-mis-inscripciones-target="content" style="display: none;">
+    <!-- Sección de Inscripciones Activas -->
+    <section class="inscriptions-section">
+      <h2 class="section-heading">
+        <span>🟢</span> Inscripciones Activas
+      </h2>
+
+      <div class="inscriptions-list" data-mis-inscripciones-target="activasContainer"></div>
+
+      <!-- Estado vacío para activas -->
+      <div class="empty-state" data-mis-inscripciones-target="activasEmpty" style="display: none;">
+        <span class="empty-state-icon">📋</span>
+        <h3 class="empty-state-title">No tenés inscripciones activas</h3>
+        <p class="empty-state-text">Actualmente no estás inscripto en ninguna actividad.</p>
+        <a href="/actividades" class="btn btn-primary">
+          Ver actividades disponibles
+        </a>
+      </div>
+    </section>
+
+    <!-- Sección de Inscripciones Canceladas -->
+    <section class="inscriptions-section">
+      <h2 class="section-heading">
+        <span>⚪</span> Historial de Inscripciones Canceladas
+      </h2>
+
+      <div class="inscriptions-list" data-mis-inscripciones-target="canceladasContainer"></div>
+
+      <!-- Estado vacío para canceladas -->
+      <div class="empty-state" data-mis-inscripciones-target="canceladasEmpty" style="display: none;">
+        <span class="empty-state-icon">👌</span>
+        <h3 class="empty-state-title">No hay inscripciones canceladas</h3>
+        <p class="empty-state-text">No has cancelado ninguna inscripción.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Modal de confirmación para Cancelar Inscripción -->
+  <div class="modal-backdrop"
+       data-mis-inscripciones-target="cancelModal"
+       style="display: none;">
+    <div class="modal-card">
+      <h3 class="modal-title">¿Cancelar inscripción?</h3>
+      <p class="modal-text" data-mis-inscripciones-target="cancelModalText">
+        ¿Estás seguro de cancelar tu inscripción? Esta acción liberará tu cupo para otro deportista.
+      </p>
+      <div class="modal-actions">
+        <button type="button"
+                class="btn btn-outline"
+                data-action="click->mis-inscripciones#closeCancelModal">
+          Volver
+        </button>
+        <button type="button"
+                class="btn btn-danger"
+                data-action="click->mis-inscripciones#confirmCancel"
+                data-mis-inscripciones-target="confirmCancelBtn">
+          Sí, cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

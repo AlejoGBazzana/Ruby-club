@@ -69,10 +69,10 @@ deportista_carlos = Deportista.create!(socio: socio_carlos, edad: 35)
 deportista_lucia = Deportista.create!(socio: socio_lucia, edad: 19)
 
 # Relaciones N:M Deportista - Deporte
-deportista_juan.deportes << [futbol, padel]
-deportista_maria.deportes << [tenis, natacion]
-deportista_carlos.deportes << [futbol, basquet]
-deportista_lucia.deportes << [natacion, tenis]
+deportista_juan.deportes << [ futbol, padel ]
+deportista_maria.deportes << [ tenis, natacion ]
+deportista_carlos.deportes << [ futbol, basquet ]
+deportista_lucia.deportes << [ natacion, tenis ]
 
 # 4. Actividades
 puts "Creando actividades..."

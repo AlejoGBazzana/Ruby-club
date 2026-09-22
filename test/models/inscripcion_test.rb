@@ -44,7 +44,7 @@ class InscripcionTest < ActiveSupport::TestCase
   end
 
   test "estado de inscripcion debe pertenecer a los estados definidos" do
-    ["pendiente", "confirmada", "cancelada"].each do |estado_valido|
+    [ "pendiente", "confirmada", "cancelada" ].each do |estado_valido|
       inscripcion = Inscripcion.new(deportista: @deportista1, actividad: @actividad, estado: estado_valido)
       assert inscripcion.valid?, "#{estado_valido} debería ser un estado válido"
     end
@@ -148,7 +148,7 @@ class InscripcionTest < ActiveSupport::TestCase
     end
 
     correo = ActionMailer::Base.deliveries.last
-    assert_equal [@socio1.email], correo.to
+    assert_equal [ @socio1.email ], correo.to
 
     ActionMailer::Base.deliveries.clear
     assert_no_emails do

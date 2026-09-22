@@ -48,7 +48,7 @@ class Admin::InscripcionesControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to admin_inscripcion_url(@inscripcion)
     assert_equal "confirmada", @inscripcion.reload.estado
-    assert_equal [@socio.email], ActionMailer::Base.deliveries.last.to
+    assert_equal [ @socio.email ], ActionMailer::Base.deliveries.last.to
   end
 
   test "destroy" do

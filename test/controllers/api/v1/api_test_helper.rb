@@ -14,6 +14,6 @@ module ApiTestHelper
     deportista = Deportista.create!(socio: socio, edad: edad)
     user = User.create!(email: email, password: "password", role: :user, socio: socio)
 
-    [user, deportista]
+    [ user, deportista ]
   end
 end

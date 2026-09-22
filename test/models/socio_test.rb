@@ -34,7 +34,7 @@ class SocioTest < ActiveSupport::TestCase
   end
 
   test "email de socio debe tener formato valido" do
-    ["invalido", "sin_arroba.com", "usuario@"].each do |email_invalido|
+    [ "invalido", "sin_arroba.com", "usuario@" ].each do |email_invalido|
       @socio_valido.email = email_invalido
       assert_not @socio_valido.valid?, "#{email_invalido} debería ser inválido"
       assert @socio_valido.errors.of_kind?(:email, :invalid)

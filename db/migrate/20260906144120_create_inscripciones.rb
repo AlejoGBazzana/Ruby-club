@@ -9,7 +9,7 @@ class CreateInscripciones < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :inscripciones, [:deportista_id, :actividad_id],
+    add_index :inscripciones, [ :deportista_id, :actividad_id ],
               unique: true,
               where: "estado != 'cancelada'",
               name: "idx_inscripciones_activas_unicas"

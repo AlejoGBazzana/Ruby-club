@@ -19,7 +19,7 @@ class Api::V1::InscripcionesControllerTest < ActionDispatch::IntegrationTest
     get api_v1_inscripciones_url, headers: authorization_headers(@token), as: :json
 
     assert_response :success
-    assert_equal [own_inscripcion.id], json_response.fetch("inscripciones").map { |inscripcion| inscripcion["id"] }
+    assert_equal [ own_inscripcion.id ], json_response.fetch("inscripciones").map { |inscripcion| inscripcion["id"] }
   end
 
   test "does not expose or cancel another users inscripcion" do

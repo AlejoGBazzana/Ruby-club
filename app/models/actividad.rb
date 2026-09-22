@@ -24,7 +24,7 @@ class Actividad < ApplicationRecord
   def cupo_disponible
     return 0 unless cupo
 
-    [cupo - cantidad_inscripciones_activas, 0].max
+    [ cupo - cantidad_inscripciones_activas, 0 ].max
   end
 
   def completa?

@@ -19,8 +19,8 @@ class InscripcionMailerTest < ActionMailer::TestCase
   test "confirmacion incluye los datos esenciales de la inscripcion" do
     correo = InscripcionMailer.confirmacion(@inscripcion)
 
-    assert_equal ["ana@example.com"], correo.to
-    assert_equal ["notificaciones@rubyclub.test"], correo.from
+    assert_equal [ "ana@example.com" ], correo.to
+    assert_equal [ "notificaciones@rubyclub.test" ], correo.from
     assert_equal "Confirmación de inscripción a Entrenamiento", correo.subject
 
     contenido = correo.text_part.body.decoded

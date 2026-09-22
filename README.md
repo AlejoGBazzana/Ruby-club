@@ -243,19 +243,27 @@ No se documenta en el repositorio una configuración de producción para envíos
 
 ## 11. Tests
 
-La suite de tests se ejecuta con:
+La suite completa del proyecto se ejecuta con:
 
 ```bash
 bundle exec rails test
 ```
 
-También se validan tests específicos de la API con:
+Resultado verificado en el proyecto actual:
+
+- `114 runs`
+- `356 assertions`
+- `0 failures`
+- `0 errors`
+- `0 skips`
+
+También se pueden ejecutar tests específicos de la API con:
 
 ```bash
 bundle exec rails test test/controllers/api/v1
 ```
 
-La suite ejecutada durante la verificación del proyecto reportó:
+Resultado verificado para esa suite específica:
 
 - `16 runs`
 - `61 assertions`
@@ -279,9 +287,17 @@ La verificación ejecutada sobre el proyecto mostró:
 
 ## 13. Credenciales
 
-No existen credenciales predefinidas ni valores de acceso documentados en el repositorio inspeccionado. Los usuarios se crean en test y en la aplicación mediante `User.create!(email: ..., password: ..., role: ...)`.
+No hay credenciales hardcodeadas ni usuarios predefinidos almacenados en el repositorio para acceder al sistema en desarrollo o producción.
 
-No se encontraron credenciales de desarrollo fijas ni archivos de entorno con secretos comprometidos.
+La forma real de disponer un usuario es creando registros de `User` en la aplicación o en tests, por ejemplo con `User.create!(email: ..., password: ..., role: ...)`.
+
+- El back-office usa autenticación web de Devise mediante `devise_for :users` y `before_action :authenticate_user!` en `Admin::BaseController`.
+- La API usa autenticación por token Bearer. El flujo real es:
+  1. el cliente envía `email` y `password` a `POST /api/v1/login`;
+  2. si las credenciales son válidas, el servidor genera un token;
+  3. el cliente envía ese token en el header `Authorization: Bearer <token>`.
+
+Los usuarios y sus permisos se manejan con Devise y Pundit, pero no hay credenciales ni accesos fijos en Git. Se evita exponer contraseñas, hashes de tokens o secretos en la API y en la respuesta JSON.
 
 ## 14. Deploy
 

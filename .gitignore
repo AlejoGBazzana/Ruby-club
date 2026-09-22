@@ -67,3 +67,4 @@ build-iPhoneSimulator/
 /storage/*.sqlite3-shm
 /storage/*.sqlite3-wal
 /log/*
+/storage/q4/

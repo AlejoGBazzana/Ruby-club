@@ -68,3 +68,6 @@ build-iPhoneSimulator/
 /storage/*.sqlite3-wal
 /log/*
 /storage/q4/
+
+# Credenciales locales de prueba
+/login.json

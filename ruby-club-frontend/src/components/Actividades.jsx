@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { apiClient } from '../api/client';
 
 export default function Actividades({ onSelectActividad, onNavigate, onUnauthorized }) {
@@ -32,7 +32,11 @@ export default function Actividades({ onSelectActividad, onNavigate, onUnauthori
   }, [onUnauthorized]);
 
   useEffect(() => {
-    loadData();
+    const timeoutId = window.setTimeout(() => {
+      void loadData();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [loadData]);
 
   // Mapa de inscripciones activas por ID de actividad

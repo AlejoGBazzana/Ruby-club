@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { apiClient } from '../api/client';
 
 export default function ActividadDetalle({ actividadId, onBack, onNavigate, onUnauthorized }) {
@@ -42,7 +42,11 @@ export default function ActividadDetalle({ actividadId, onBack, onNavigate, onUn
   }, [actividadId, onUnauthorized]);
 
   useEffect(() => {
-    loadDetail();
+    const timeoutId = window.setTimeout(() => {
+      void loadDetail();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [loadDetail]);
 
   const handleEnroll = async () => {

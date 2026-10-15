@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 export default function Login({ onLoginSuccess, sessionExpired }) {
   const [email, setEmail] = useState('');

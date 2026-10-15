@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { apiClient } from '../api/client';
 
 export default function MisInscripciones({ onNavigate, onUnauthorized }) {
@@ -28,7 +28,11 @@ export default function MisInscripciones({ onNavigate, onUnauthorized }) {
   }, [onUnauthorized]);
 
   useEffect(() => {
-    loadInscripciones();
+    const timeoutId = window.setTimeout(() => {
+      void loadInscripciones();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [loadInscripciones]);
 
   const activas = inscripciones.filter(

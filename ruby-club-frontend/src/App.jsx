@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Navbar from './components/Navbar';
 import Login from './components/Login';
 import Actividades from './components/Actividades';
@@ -13,6 +13,13 @@ export default function App() {
   });
   const [selectedActividadId, setSelectedActividadId] = useState(null);
   const [sessionExpired, setSessionExpired] = useState(false);
+
+  const handleUnauthorized = useCallback(() => {
+    apiClient.clearSession();
+    setUser(null);
+    setSessionExpired(true);
+    setCurrentPage('login');
+  }, []);
 
   // Cargar info extendida de /me cuando esté autenticado
   const fetchUserInfo = useCallback(async () => {
@@ -32,20 +39,17 @@ export default function App() {
     } catch (e) {
       console.warn('No se pudo cargar /me:', e);
     }
-  }, []);
+  }, [handleUnauthorized]);
 
   useEffect(() => {
-    if (apiClient.isAuthenticated()) {
-      fetchUserInfo();
-    }
-  }, [fetchUserInfo]);
+    if (!apiClient.isAuthenticated()) return;
 
-  const handleUnauthorized = useCallback(() => {
-    apiClient.clearSession();
-    setUser(null);
-    setSessionExpired(true);
-    setCurrentPage('login');
-  }, []);
+    const timeoutId = window.setTimeout(() => {
+      void fetchUserInfo();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [fetchUserInfo]);
 
   const handleLoginSuccess = async (email, password) => {
     const data = await apiClient.login(email, password);

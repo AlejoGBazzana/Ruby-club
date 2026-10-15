@@ -1,6 +1,8 @@
 # Ruby Club
 
-Aplicación web de gestión de actividades, socios y deportistas para un club deportivo, desarrollada con Ruby on Rails. El proyecto combina un back-office administrativo con una API JSON versionada para el uso del usuario final.
+Aplicación web de gestión de actividades, socios y deportistas para un club deportivo. El proyecto combina un back-office administrativo con una API JSON versionada para uso del usuario final.
+
+Este trabajo corresponde a la modalidad individual del TP2 y continúa con el backend desarrollado en el TP1, manteniendo la API JSON y el back-office administrativo bajo `/admin`. El frontend de usuario final se implementa con React + Vite y consume la API REST de Rails de manera separada.
 
 ## 1. Descripción general
 
@@ -11,50 +13,86 @@ Ruby Club permite:
 - gestionar la relación entre socios y deportistas;
 - controlar cupos e inscripciones por actividad;
 - consumir datos desde una API REST bajo `/api/v1`;
-- enviar correos de confirmación por `Action Mailer` cuando una inscripción pasa a estado `confirmada`;
-- manejar archivos de imagen asociados a socios mediante Active Storage.
+- enviar correos de confirmación con `Action Mailer` al cambiar una inscripción a `confirmada`;
+- manejar archivos de imagen asociados a socios mediante `Active Storage`.
 
-## 2. Tecnologías utilizadas
+## 2. Versiones y requisitos verificados
 
-- Ruby
-- Rails 8.1.3 (`Gemfile`)
-- SQLite (`config/database.yml`)
-- Devise
-- Pundit
-- Active Storage
-- Action Mailer
-- API JSON versionada (`/api/v1`)
-- Tests con Rails (`bundle exec rails test`)
-- RuboCop (`bundle exec rubocop`)
-- Brakeman (`bundle exec brakeman`)
+### Ruby y Rails
 
-## 3. Requisitos e instalación
+- Ruby: `4.0.6` según `.ruby-version`.
+- Rails: `~> 8.1.3` declarado en el `Gemfile`.
+- Bundler: la resolución del proyecto se ejecuta con Bundler 4.0.16 en el entorno de trabajo actual.
 
-### Requisitos
+### Frontend
 
-- Ruby compatible con Rails 8.
-- Bundler.
-- SQLite disponible localmente.
-- La versión exacta de Ruby no está fijada explícitamente en el repositorio, pero el proyecto declara `rails ~> 8.1.3` en el `Gemfile`.
+El proyecto React + Vite indica en su documentación local versiones compatibles con:
 
-### Instalación
+- Node.js `18.x` o superior;
+- React `^19.2.8`;
+- Vite `^8.3.0`;
+- Vitest `^5.0.3`;
+- Testing Library React `^16.3.3`;
+- jsdom `^30.1.2`.
+
+Estos valores se verifican en `ruby-club-frontend/package.json` y en la documentación del frontend del repositorio.
+
+### Dependencias del backend
+
+- SQLite para desarrollo y test, según `config/database.yml`.
+- Devise para autenticación.
+- Pundit para autorización.
+- Active Storage y Action Mailer.
+
+## 3. Instalación y preparación del entorno
+
+### 3.1. Requisitos locales
+
+- Ruby `4.0.6` (según `.ruby-version`).
+- Bundler disponible en el entorno.
+- SQLite local instalado y accesible.
+- Node.js compatible con el frontend React + Vite.
+
+### 3.2. Backend Rails
 
 Desde la raíz del proyecto:
 
 ```bash
+cd "C:/GitHub/Facultad/Prog IV/Ruby_Club"
 bundle install
 bin/rails db:create
 bin/rails db:migrate
+bin/rails db:seed
 bin/rails server
 ```
 
-El proyecto usa la base SQLite definida en `config/database.yml` para desarrollo y test.
+La base de datos del proyecto está definida en `config/database.yml` y usa SQLite para `development` y `test`.
+
+> `db:seed` existe y carga datos de prueba del dominio del sistema (socios, deportes, actividades e inscripciones). La carga de seeds no crea usuarios Devise de manera explícita en este repositorio.
+
+### 3.3. Frontend React
+
+Desde la carpeta del frontend:
+
+```bash
+cd "C:/GitHub/Facultad/Prog IV/Ruby_Club/ruby-club-frontend"
+npm install
+npm run dev
+```
+
+El frontend queda disponible en `http://localhost:5173` y el backend en `http://127.0.0.1:3000`.
+
+La configuración del proxy de Vite está definida en `ruby-club-frontend/vite.config.js` y redirige las peticiones a `/api` al backend Rails.
+
+### CORS y entorno local
+
+En desarrollo, la integración se resuelve con un proxy de Vite hacia `http://127.0.0.1:3000`; no hay una configuración explícita de CORS en Rails para este repositorio. Esa decisión es compatible con el flujo local previsto y no requiere middleware adicional ni cambios en el backend. Si más adelante se despliega el frontend en un origen distinto del backend, entonces deberá evaluarse una configuración explícita de CORS por requisito de despliegue, pero eso no forma parte del alcance actual de este proyecto.
 
 ## 4. Estructura funcional
 
 ### Back-office administrativo
 
-El back-office está implementado bajo el namespace `/admin` y gestiona los recursos:
+El back-office está implementado bajo `/admin` y gestiona los recursos:
 
 - `Socios`
 - `Deportistas`
@@ -62,251 +100,142 @@ El back-office está implementado bajo el namespace `/admin` y gestiona los recu
 - `Actividades`
 - `Inscripciones`
 
-Los controladores administrativos heredan de `Admin::BaseController`, que aplica:
-
-- `before_action :authenticate_user!`
-- autorización con Pundit mediante `UserPolicy#access_admin?`
+La definición real de las rutas está en `config/routes.rb`.
 
 ### Usuario final / frontend
 
-El frontend se sirve desde `FrontendController` con rutas como:
+El frontend se sirve desde rutas como:
 
 - `/`
 - `/login`
 - `/actividades`
 - `/mis-inscripciones`
 
-El frontend consume la API JSON bajo `/api/v1` a través de `app/javascript/api_client.js`.
-
 ### Autenticación
 
-- La autenticación web y de back-office usa Devise.
+- La autenticación web y del back-office usa Devise.
 - La API usa autenticación por token Bearer.
 
-## 5. Modelos principales
+## 5. Modelo `User` y preparación de usuarios de prueba
 
-### User
+El modelo `User` está definido en `app/models/user.rb` y admite los roles:
 
-- Hereda de `ApplicationRecord` y usa Devise.
-- Tiene roles: `user`, `admin`, `superadmin`.
-- Está asociado opcionalmente a un `Socio`.
-- Guarda la contraseña cifrada con Devise (`encrypted_password`).
-- Tiene soporte para generar e invalidar token de API.
+- `user`
+- `admin`
+- `superadmin`
 
-### Socio
+La clase usa Devise y define `:database_authenticatable`, `:registerable`, `:recoverable`, `:rememberable` y `:validatable`.
 
-- Representa a la persona asociada al club.
-- Tiene relación `has_one :deportista`.
-- Tiene relación `has_one :user`.
-- Tiene `has_one_attached :foto_perfil` para la foto de perfil.
-- Valida nombre, apellido, email y fecha de inscripción.
+### Limitación verificada
 
-### Deportista
+No existe en el repositorio un procedimiento oficial, reproducible y seguro para crear usuarios de prueba con `User.create` o con un seed de usuarios Devise. La semilla disponible (`db/seeds.rb`) crea socios, deportes, actividades e inscripciones, pero no crea usuarios de autenticación.
 
-- Está asociado a un `Socio`.
-- Tiene muchos deportes mediante `has_and_belongs_to_many :deportes`.
-- Tiene muchas inscripciones y muchas actividades a través de ellas.
-- Cada deportista tiene un `socio_id` único.
+Por ese motivo, esta documentación no inventa un paso de creación de usuarios ni expone credenciales reales, tokens, contraseñas ni secretos.
 
-### Deporte
+### Procedimiento seguro para una cuenta temporal de demostración (solo desarrollo)
 
-- Tiene muchos deportistas y muchas actividades.
-- El nombre es único en forma insensible a mayúsculas/minúsculas.
+Para probar el recorrido del usuario final en el frontend con un `User` válido, el proyecto exige que exista un `Socio` con un `Deportista` asociado y que ese `Socio` no esté ya vinculado a otro `User`. Esa restricción está dada por los modelos de `User`, `Socio` y `Deportista`, y no debe alterarse para un entorno de prueba.
 
-### Actividad
+La forma segura y mínima de prepararla en un entorno local es la siguiente:
 
-- Pertenece a un `Deporte`.
-- Tiene muchas inscripciones y deportistas a través de ellas.
-- Tiene validaciones de nombre, fecha, horario y cupo.
-- Calcula `cupo_disponible` usando la cantidad de inscripciones activas.
+1. Garantizar que se trabaja sobre la base de desarrollo del proyecto.
+2. Buscar un `Socio` que tenga un `Deportista` asociado y que no esté ya enlazado a ningún `User`.
+3. Crear un `User` nuevo con rol `user`, un email temporal único y una contraseña válida según Devise.
+4. Asociarlo al `Socio` elegido.
+5. Verificar la relación antes de usar la cuenta.
+6. Eliminar solo ese `User` temporal al finalizar la prueba únicamente si se verifican conjuntamente:
+   - el `id` exacto devuelto al crear esa cuenta,
+   - que ese `id` sigue correspondiendo al email temporal esperado,
+   - y que la cuenta fue creada específicamente para esta prueba.
+   La limpieza no debe eliminar ni modificar el `Socio`, el `Deportista` ni las `Inscripcion`.
 
-### Inscripcion
+Ejemplo de procedimiento documentado, sin ejecutar ni dejar credenciales persistentes en el repositorio:
 
-- Pertenece a un `Deportista` y a una `Actividad`.
-- Estados posibles: `pendiente`, `confirmada`, `cancelada`.
-- Valida unicidad de inscripción activa por deportista y actividad.
-- Verifica cupo disponible en la actividad.
-- `cancelar!` cambia el estado a `cancelada`.
+```powershell
+cd "C:/GitHub/Facultad/Prog IV/Ruby_Club"
+$env:RAILS_ENV = "development"
 
-## 6. Back-office implementado
-
-El namespace administrativo existe y se define en `config/routes.rb`:
-
-```ruby
-namespace :admin do
-  resources :socios
-  resources :deportistas
-  resources :deportes
-  resources :actividades
-  resources :inscripciones
+bin/rails runner "
+raise 'No se está en development' unless Rails.env.development?
+if User.exists?(email: 'temp.user.dev@example.com')
+  abort('TEMP_USER_ALREADY_EXISTS')
 end
+candidate = Socio.joins(:deportista).left_outer_joins(:user).where(users: { id: nil }).order(:id).first
+abort('NO_EXISTE_SOCIO_CANDIDATO') if candidate.nil?
+user = User.create!(email: 'temp.user.dev@example.com', password: 'Password123', password_confirmation: 'Password123', role: 'user', socio_id: candidate.id)
+puts \"TEMP_USER_ID=#{user.id}\"
+"
 ```
 
-Los CRUDs concretos implementados son:
+El comando anterior solo se usa como ejemplo de procedimiento local y debe ejecutarse únicamente en `development`, con una dirección temporal que no corresponda a un usuario real del sistema. No se deben conservar credenciales reales ni usuarios creados de forma permanente. Si la cuenta temporal no puede prepararse con estas condiciones, el procedimiento debe detenerse sin crear datos.
 
-- Socios
-- Deportistas
-- Deportes
-- Actividades
-- Inscripciones
+## 6. API JSON versionada
 
-Cada controlador del back-office usa autenticación por Devise y autorización por Pundit a través de `Admin::BaseController`.
-
-## 7. API JSON versionada
-
-La API se encuentra bajo el namespace `/api/v1` y está definida en `config/routes.rb`.
+La API se encuentra bajo ` /api/v1 ` y está definida en `config/routes.rb`.
 
 ### Endpoints reales existentes
 
 | Método | Ruta | Controlador/acción | Autenticación | Propósito |
 |---|---|---|---|---|
 | `POST` | `/api/v1/login` | `Api::V1::AuthenticationController#login` | No | iniciar sesión con email y contraseña |
-| `POST` | `/api/v1/logout` | `Api::V1::AuthenticationController#logout` | Sí (Bearer token) | invalidar token actual |
-| `GET` | `/api/v1/me` | `Api::V1::MeController#show` | Sí (Bearer token) | devolver usuario autenticado y datos relacionados |
-| `GET` | `/api/v1/actividades` | `Api::V1::ActividadesController#index` | Sí (Bearer token) | listar actividades |
-| `GET` | `/api/v1/inscripciones` | `Api::V1::InscripcionesController#index` | Sí (Bearer token) | listar inscripciones del deportista autenticado |
-| `POST` | `/api/v1/inscripciones` | `Api::V1::InscripcionesController#create` | Sí (Bearer token) | crear inscripción para el deportista autenticado |
-| `DELETE` | `/api/v1/inscripciones/:id` | `Api::V1::InscripcionesController#destroy` | Sí (Bearer token) | cancelar inscripción propia |
+| `POST` | `/api/v1/logout` | `Api::V1::AuthenticationController#logout` | Sí | invalidar token actual |
+| `GET` | `/api/v1/me` | `Api::V1::MeController#show` | Sí | devolver usuario autenticado |
+| `GET` | `/api/v1/actividades` | `Api::V1::ActividadesController#index` | Sí | listar actividades |
+| `GET` | `/api/v1/inscripciones` | `Api::V1::InscripcionesController#index` | Sí | listar inscripciones del usuario autenticado |
+| `POST` | `/api/v1/inscripciones` | `Api::V1::InscripcionesController#create` | Sí | crear inscripción |
+| `DELETE` | `/api/v1/inscripciones/:id` | `Api::V1::InscripcionesController#destroy` | Sí | cancelar inscripción propia |
 
-### Parámetros importantes
+### Autenticación API
 
-- `POST /api/v1/login`
-  - `email`
-  - `password`
-- `POST /api/v1/inscripciones`
-  - `actividad_id` (obligatorio)
+La autenticación API se implementa con bearer tokens. El cliente envía `Authorization: Bearer <token>`, y el backend valida dicho token para cada operación protegida. `User#generate_api_token!` crea un token y lo guarda como digest; el valor real no se expone como texto plano.
 
-### Respuesta general
+## 7. Tests, lint, build, RuboCop y Brakeman
 
-La API responde en JSON con estructura tipo:
-
-```json
-{
-  "error": {
-    "code": "unauthorized",
-    "message": "Token de autenticación inválido o ausente."
-  }
-}
-```
-
-Cuando la operación es exitosa, responde con payloads JSON específicos por endpoint; por ejemplo:
-
-```json
-{
-  "token": "token-generado-por-el-servidor",
-  "user": {
-    "id": 1,
-    "email": "usuario@example.com",
-    "role": "user"
-  }
-}
-```
-
-No se encuentran más endpoints `/api/v1` en las rutas actuales del proyecto.
-
-## 8. Autenticación API
-
-La autenticación API se implementa con bearer tokens.
-
-- El cliente envía `Authorization: Bearer <token>`.
-- `Api::V1::BaseController#authenticate_api_user!` valida el token.
-- `User#generate_api_token!` genera un token aleatorio y guarda su hash `api_token_digest` en base de datos.
-- `User.authenticate_api_token` compara el digest del token recibido con el valor almacenado.
-- `logout` invalida el token actual con `invalidate_api_token!`.
-
-Esto implica que:
-
-- el token real se entrega al cliente;
-- el servidor no almacena el token original en texto plano;
-- se evita exponer `encrypted_password` y `api_token_digest` en la API.
-
-## 9. Active Storage
-
-El proyecto usa Active Storage para la foto de perfil del socio.
-
-- `Socio` define `has_one_attached :foto_perfil`.
-- Las restricciones implementadas son:
-  - tipos permitidos: `image/jpeg`, `image/png`, `image/webp`;
-  - tamaño máximo: 5 MB.
-
-La validación real está en `Socio#foto_perfil_valida`.
-
-## 10. Action Mailer
-
-El proyecto implementa `InscripcionMailer` para confirmar inscripciones.
-
-- `InscripcionMailer#confirmacion` arma el correo para el email del socio asociado.
-- Se dispara desde `Inscripcion` mediante `after_commit`, cuando el estado pasa a `confirmada`.
-- La lógica real del envío está en `Inscripcion#notificar_confirmacion?` y `Inscripcion#enviar_correo_de_confirmacion`.
-
-No se documenta en el repositorio una configuración de producción para envíos reales fuera del entorno local/test del proyecto.
-
-## 11. Tests
-
-La suite completa del proyecto se ejecuta con:
+### Rails
 
 ```bash
 bundle exec rails test
 ```
 
-Resultado verificado en el proyecto actual:
-
-- `114 runs`
-- `356 assertions`
-- `0 failures`
-- `0 errors`
-- `0 skips`
-
-También se pueden ejecutar tests específicos de la API con:
+### Frontend
 
 ```bash
-bundle exec rails test test/controllers/api/v1
+cd "C:/GitHub/Facultad/Prog IV/Ruby_Club/ruby-club-frontend"
+npm test
+npm run lint
+npm run build
 ```
 
-Resultado verificado para esa suite específica:
-
-- `16 runs`
-- `61 assertions`
-- `0 failures`
-- `0 errors`
-- `0 skips`
-
-## 12. Calidad y seguridad
-
-Se incluye verificación de estilo y seguridad con:
+### RuboCop
 
 ```bash
 bundle exec rubocop
+```
+
+### Brakeman
+
+```bash
 bundle exec brakeman
 ```
 
-La verificación ejecutada sobre el proyecto mostró:
+### Advertencia conocida del entorno
 
-- RuboCop: `76 files inspected, no offenses detected`
-- Brakeman: `Errors: 0` y `Security Warnings: 0`
+En el entorno actual de Windows con Ruby `4.0.6`, Bundler `4.0.16` y Brakeman `8.0.6`, la ejecución puede mostrar mensajes adicionales sobre `Process.fork` o rutas no encontradas. En este proyecto, el análisis final generó salida con código `0`, pero esa evidencia no debe interpretarse como una auditoría perfecta ni como una garantía de ausencia total de alertas en todos los entornos.
 
-## 13. Credenciales
+## 8. Limitaciones y no-objetivos documentados
 
-No hay credenciales hardcodeadas ni usuarios predefinidos almacenados en el repositorio para acceder al sistema en desarrollo o producción.
+- El repositorio no incluye un enunciado oficial del TP2 ni la sección 9.1 del mismo.
+- No se documenta un procedimiento verificado para crear usuarios Devise con la semilla del proyecto.
+- No hay enlaces de despliegue verificados en el repositorio.
+- No se publican contraseñas, tokens ni secretos en esta documentación.
 
-La forma real de disponer un usuario es creando registros de `User` en la aplicación o en tests, por ejemplo con `User.create!(email: ..., password: ..., role: ...)`.
+## 9. Resumen del flujo de ejecución recomendado
 
-- El back-office usa autenticación web de Devise mediante `devise_for :users` y `before_action :authenticate_user!` en `Admin::BaseController`.
-- La API usa autenticación por token Bearer. El flujo real es:
-  1. el cliente envía `email` y `password` a `POST /api/v1/login`;
-  2. si las credenciales son válidas, el servidor genera un token;
-  3. el cliente envía ese token en el header `Authorization: Bearer <token>`.
+1. Instalar dependencias del backend con Bundler.
+2. Crear la base SQLite y migrar la estructura.
+3. Ejecutar `db:seed` si se desea cargar datos del dominio.
+4. Iniciar el backend Rails.
+5. Instalar dependencias del frontend y levantar Vite.
+6. Ejecutar tests, lint, build y auditorías de seguridad según corresponda.
 
-Los usuarios y sus permisos se manejan con Devise y Pundit, pero no hay credenciales ni accesos fijos en Git. Se evita exponer contraseñas, hashes de tokens o secretos en la API y en la respuesta JSON.
-
-## 14. Deploy
-
-No se encontró una configuración de despliegue ni una URL de producción documentada en el proyecto inspeccionado. Por ese motivo, no se incluye ningún dato de deploy que no esté respaldado por el código.
-
-## 15. Observaciones finales
-
-- El proyecto presenta una arquitectura clara: back-office administrativo, frontend y API JSON.
-- La API actual está implementada y versionada bajo `/api/v1`.
-- La autenticación web y de API se apoya en Devise y en tokens Bearer.
-- No se documentan secretos, credenciales ni despliegue real en el repositorio.
-- La evidencia disponible permite documentar la implementación actual sin inventar funcionalidad adicional.
+Este README se mantiene orientado a lo que está comprobado en el repositorio y evita describir pasos no verificados ni inventar requisitos ajenos al código real del proyecto.
